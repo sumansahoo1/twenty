@@ -7,9 +7,15 @@ const escapeDisplayName = (displayName: string): string =>
 export const buildEmailFrom = (
   emailFromAddress: string,
   emailFromName: string,
+  options?: { overrideName?: string },
 ): string => {
   const parsedFromAddress = parseEmailFromAddress(emailFromAddress);
-  const displayName = parsedFromAddress.name || emailFromName;
+  // overrideName forces a specific display name even when
+  // EMAIL_FROM_ADDRESS contains an embedded RFC 5322 name.
+  // Used for sender-identity emails (invitations, domain
+  // approvals) where the inviter's real name must appear.
+  const displayName =
+    options?.overrideName ?? (parsedFromAddress.name || emailFromName);
 
   if (displayName) {
     return `"${escapeDisplayName(displayName)}" <${parsedFromAddress.address}>`;

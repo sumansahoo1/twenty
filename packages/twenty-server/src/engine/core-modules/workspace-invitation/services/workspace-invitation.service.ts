@@ -352,7 +352,10 @@ export class WorkspaceInvitationService {
         await this.emailService.send({
           from: buildEmailFrom(
             this.twentyConfigService.get('EMAIL_FROM_ADDRESS'),
-            `${sender.name.firstName} ${sender.name.lastName} (via Twenty)`,
+            this.twentyConfigService.get('EMAIL_FROM_NAME'),
+            {
+              overrideName: `${sender.name.firstName} ${sender.name.lastName} (via Twenty)`,
+            },
           ),
           to: invitation.value.email,
           subject,

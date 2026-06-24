@@ -45,4 +45,14 @@ describe('buildEmailFrom', () => {
 
     expect(result).toBe('"ACME\\\\Support" <noreply@acme.com>');
   });
+
+  it('uses overrideName even when EMAIL_FROM_ADDRESS has embedded display name', () => {
+    const result = buildEmailFrom(
+      '"Acme CRM" <noreply@acme.com>',
+      'Felix from Twenty',
+      { overrideName: 'John Doe (via Twenty)' },
+    );
+
+    expect(result).toBe('"John Doe (via Twenty)" <noreply@acme.com>');
+  });
 });
